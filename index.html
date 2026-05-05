@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LibraryMS — Book Management System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- ══════════════════════ SIDEBAR ══════════════════════ -->
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <span class="logo-icon">📚</span>
+    <h1>LibraryMS</h1>
+    <span>Management System</span>
+  </div>
+
+  <nav class="sidebar-nav">
+    <div class="nav-section-label">Main</div>
+    <a class="nav-item active" data-page="page-dashboard" onclick="showPage('page-dashboard')">
+      <span class="nav-icon">🏠</span> Dashboard
+    </a>
+
+    <div class="nav-section-label">Catalog</div>
+    <a class="nav-item" data-page="page-books" onclick="showPage('page-books')">
+      <span class="nav-icon">📖</span> Books
+    </a>
+    <a class="nav-item" data-page="page-members" onclick="showPage('page-members')">
+      <span class="nav-icon">👥</span> Members
+    </a>
+
+    <div class="nav-section-label">Transactions</div>
+    <a class="nav-item" data-page="page-issue" onclick="showPage('page-issue')">
+      <span class="nav-icon">🔄</span> Issue / Return
+    </a>
+    <a class="nav-item" data-page="page-overdue" onclick="showPage('page-overdue')">
+      <span class="nav-icon">⚠️</span> Overdue
+      <span class="nav-badge" id="overdue-badge">0</span>
+    </a>
+  </nav>
+
+  <div class="sidebar-footer">
+    DBMS Mini Project · 2025
+  </div>
+</aside>
+
+<!-- ══════════════════════ MAIN ══════════════════════ -->
+<main class="main">
+
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <div class="topbar-title">📚 Dashboard</div>
+    <div class="topbar-right">
+      <div class="search-bar">
+        <span class="search-icon">🔍</span>
+        <input type="text" placeholder="Quick search..." id="global-search">
+      </div>
+      <div class="topbar-avatar">LB</div>
+    </div>
+  </div>
+
+  <div class="page-content">
+
+    <!-- ══════ PAGE: DASHBOARD ══════ -->
+    <div class="page active" id="page-dashboard">
+
+      <div class="stats-grid">
+        <div class="stat-card gold">
+          <div class="stat-icon">📚</div>
+          <div class="stat-label">Total Books</div>
+          <div class="stat-value" id="stat-books">—</div>
+          <div class="stat-sub">Across all genres</div>
+        </div>
+        <div class="stat-card sage">
+          <div class="stat-icon">👥</div>
+          <div class="stat-label">Active Members</div>
+          <div class="stat-value" id="stat-members">—</div>
+          <div class="stat-sub">Registered members</div>
+        </div>
+        <div class="stat-card brown">
+          <div class="stat-icon">🔄</div>
+          <div class="stat-label">Books Issued</div>
+          <div class="stat-value" id="stat-issued">—</div>
+          <div class="stat-sub">Currently out</div>
+        </div>
+        <div class="stat-card rose">
+          <div class="stat-icon">⚠️</div>
+          <div class="stat-label">Overdue</div>
+          <div class="stat-value" id="stat-overdue">—</div>
+          <div class="stat-sub">Past due date</div>
+        </div>
+      </div>
+
+      <div class="two-col">
+        <div class="table-card">
+          <div class="table-header">
+            <h3>Recent Activity</h3>
+            <button class="btn btn-outline btn-sm" onclick="showPage('page-issue')">View All</button>
+          </div>
+          <div style="padding: 0 24px;" id="recent-issues">
+            <p style="color:var(--muted);font-size:14px;padding:20px 0">Loading...</p>
+          </div>
+        </div>
+
+        <div class="table-card">
+          <div class="table-header">
+            <h3>Quick Actions</h3>
+          </div>
+          <div style="padding: 20px 24px; display:flex; flex-direction:column; gap:10px;">
+            <button class="btn btn-primary" onclick="showPage('page-books'); setTimeout(openAddBook, 100)">
+              ＋ Add New Book
+            </button>
+            <button class="btn btn-gold" onclick="showPage('page-members'); setTimeout(openAddMember, 100)">
+              ＋ Register Member
+            </button>
+            <button class="btn btn-outline" onclick="showPage('page-issue'); setTimeout(() => openModal('modal-issue'), 100)">
+              🔄 Issue a Book
+            </button>
+            <button class="btn btn-outline" onclick="showPage('page-overdue')">
+              ⚠️ View Overdue Books
+            </button>
+          </div>
+          <div style="padding: 16px 24px; border-top: 1px solid var(--parchment); background: var(--cream); border-radius: 0 0 14px 14px;">
+            <p style="font-size:12px;color:var(--muted);font-family:'Lora',serif;font-style:italic;">
+              "A library is not a luxury but one of the necessities of life." — Henry Ward Beecher
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════ PAGE: BOOKS ══════ -->
+    <div class="page" id="page-books">
+      <div class="table-card">
+        <div class="table-header">
+          <h3>Book Catalog</h3>
+          <div style="display:flex;gap:10px;align-items:center">
+            <div class="search-bar" style="background:var(--cream)">
+              <span class="search-icon">🔍</span>
+              <input type="text" placeholder="Search books..." id="books-search">
+            </div>
+            <button class="btn btn-primary" onclick="openAddBook()">＋ Add Book</button>
+          </div>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Book ID</th>
+              <th>Title / Genre</th>
+              <th>Author</th>
+              <th>Publisher</th>
+              <th>Year</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="books-tbody">
+            <tr><td colspan="7" style="text-align:center;padding:40px;color:var(--muted)">Loading...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ══════ PAGE: MEMBERS ══════ -->
+    <div class="page" id="page-members">
+      <div class="table-card">
+        <div class="table-header">
+          <h3>Member Directory</h3>
+          <div style="display:flex;gap:10px;align-items:center">
+            <div class="search-bar" style="background:var(--cream)">
+              <span class="search-icon">🔍</span>
+              <input type="text" placeholder="Search members..." id="members-search">
+            </div>
+            <button class="btn btn-primary" onclick="openAddMember()">＋ Add Member</button>
+          </div>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Member ID</th>
+              <th>Name / Email</th>
+              <th>Phone</th>
+              <th>Department</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="members-tbody">
+            <tr><td colspan="6" style="text-align:center;padding:40px;color:var(--muted)">Loading...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ══════ PAGE: ISSUE/RETURN ══════ -->
+    <div class="page" id="page-issue">
+      <div class="table-card">
+        <div class="table-header">
+          <h3>Issue & Return Log</h3>
+          <button class="btn btn-gold" onclick="populateDropdowns(); openModal('modal-issue')">🔄 Issue New Book</button>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Issue ID</th>
+              <th>Book Title</th>
+              <th>Member</th>
+              <th>Issue Date</th>
+              <th>Due Date</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="issued-tbody">
+            <tr><td colspan="7" style="text-align:center;padding:40px;color:var(--muted)">Loading...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ══════ PAGE: OVERDUE ══════ -->
+    <div class="page" id="page-overdue">
+      <div class="table-card">
+        <div class="table-header">
+          <h3>⚠️ Overdue Books</h3>
+          <span style="font-size:13px;color:var(--muted)">Books past their due date</span>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Book Title</th>
+              <th>Member Name</th>
+              <th>Member ID</th>
+              <th>Issue Date</th>
+              <th>Due Date</th>
+              <th>Days Overdue</th>
+            </tr>
+          </thead>
+          <tbody id="overdue-tbody">
+            <tr><td colspan="6" style="text-align:center;padding:40px;color:var(--muted)">Loading...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div><!-- /page-content -->
+</main>
+
+<!-- ══════════════════════ MODALS ══════════════════════ -->
+
+<!-- ADD/EDIT BOOK MODAL -->
+<div class="modal-overlay" id="modal-book" onclick="if(event.target===this) closeModal('modal-book')">
+  <div class="modal">
+    <h2 class="modal-title" id="book-modal-title">Add New Book</h2>
+    <p class="modal-sub">Fill in the book details below</p>
+    <form id="add-book-form">
+      <input type="hidden" name="book_id_hidden" id="book_id_hidden">
+      <div class="form-grid-2">
+        <div class="form-group">
+          <label class="form-label">Book ID *</label>
+          <input class="form-control" name="book_id" placeholder="e.g. BK007" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Genre</label>
+          <input class="form-control" name="genre" placeholder="e.g. Fiction">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Title *</label>
+        <input class="form-control" name="title" placeholder="Book title" required>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Author *</label>
+        <input class="form-control" name="author" placeholder="Author name" required>
+      </div>
+      <div class="form-grid-2">
+        <div class="form-group">
+          <label class="form-label">Publisher</label>
+          <input class="form-control" name="publisher" placeholder="Publisher">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Year</label>
+          <input class="form-control" name="year" type="number" placeholder="2024">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Total Copies *</label>
+        <input class="form-control" name="total_copies" type="number" value="1" min="1" required>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline" onclick="closeModal('modal-book')">Cancel</button>
+        <button type="submit" class="btn btn-primary">Save Book</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- ADD/EDIT MEMBER MODAL -->
+<div class="modal-overlay" id="modal-member" onclick="if(event.target===this) closeModal('modal-member')">
+  <div class="modal">
+    <h2 class="modal-title" id="member-modal-title">Register Member</h2>
+    <p class="modal-sub">Add a new library member</p>
+    <form id="add-member-form">
+      <input type="hidden" name="member_id_hidden" id="member_id_hidden">
+      <div class="form-grid-2">
+        <div class="form-group">
+          <label class="form-label">Member ID *</label>
+          <input class="form-control" name="member_id" placeholder="e.g. MEM005" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Department</label>
+          <input class="form-control" name="department" placeholder="Department">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Full Name *</label>
+        <input class="form-control" name="name" placeholder="Member name" required>
+      </div>
+      <div class="form-grid-2">
+        <div class="form-group">
+          <label class="form-label">Email</label>
+          <input class="form-control" name="email" type="email" placeholder="email@example.com">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Phone</label>
+          <input class="form-control" name="phone" placeholder="9876543210">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Address</label>
+        <input class="form-control" name="address" placeholder="City / Address">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline" onclick="closeModal('modal-member')">Cancel</button>
+        <button type="submit" class="btn btn-primary">Save Member</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- ISSUE BOOK MODAL -->
+<div class="modal-overlay" id="modal-issue">
+  <div class="modal">
+    <h2 class="modal-title">Issue a Book</h2>
+    <p class="modal-sub">Select a book and member to issue. Due date: 14 days from today.</p>
+    <form id="issue-book-form">
+      <div class="form-group">
+        <label class="form-label">Select Book *</label>
+        <select class="form-control" name="book_id" id="issue-book-select" required>
+          <option value="">Loading books...</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Select Member *</label>
+        <select class="form-control" name="member_id" id="issue-member-select" required>
+          <option value="">Loading members...</option>
+        </select>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline" onclick="closeModal('modal-issue')">Cancel</button>
+        <button type="submit" class="btn btn-gold">Issue Book</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script src="js/app.js"></script>
+</body>
+</html>
