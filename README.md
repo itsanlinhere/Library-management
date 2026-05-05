@@ -1,5 +1,7 @@
-# 📚 Library Management System 
-
+# 📚 Library Management System
+      
+      The Library Management System is a web-based application designed to manage library operations efficiently. It helps administrators maintain book records, member details, and borrowing activities in an organized manner.
+      
 ## 🗂️ Project Structure
 ```
 library_management/
@@ -71,6 +73,7 @@ $pass = 'your_password_here';  // change this
 
 ### 🔍 Live Search
 - Real-time search functionality for both books and members.
+>>>>>>> 801cdc691b13110e7f2d1354a23a564cd6b4d031
 
 ## 📝 Tables
 | Table | Purpose |
