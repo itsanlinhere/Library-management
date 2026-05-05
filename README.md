@@ -45,29 +45,29 @@ $pass = 'your_password_here';  // change this
 
 ## ✅ Features
 
-📊 Dashboard
-Displays live statistics such as total books, members, issued books, and overdue books.
-Shows recent activities like newly added books, issued books, and returned books.
-📚 Books Management
-Add new books with details such as title, author, category, and quantity.
-Edit existing book details.
-Delete unwanted book records.
-Search books instantly using live search.
-Track available and issued copies of each book.
-👥 Members Management
-Register new library members.
-Store member details including name, department, contact number, and email.
-Edit or remove member records.
-Search members quickly.
-🔄 Issue & Return Management
-Issue books to registered members.
-Automatically sets a 14-day due date from the issue date.
-Return books and update availability automatically.
-⚠️ Overdue Tracker
-Identifies overdue books automatically.
-Displays overdue days count for each delayed return.
-🔍 Live Search
-Real-time search functionality for both books and members.
+-**📊 Dashboard**
+-Displays live statistics such as total books, members, issued books, and overdue books.
+-Shows recent activities like newly added books, issued books, and returned books.
+-**📚 Books Management**
+-Add new books with details such as title, author, category, and quantity.
+-Edit existing book details.
+-Delete unwanted book records.
+-Search books instantly using live search.
+-Track available and issued copies of each book.
+-**👥 Members Management**
+-Register new library members.
+-Store member details including name, department, contact number, and email.
+-Edit or remove member records.
+-Search members quickly.
+-**🔄 Issue & Return Management**
+-Issue books to registered members.
+-Automatically sets a 14-day due date from the issue date.
+-Return books and update availability automatically.
+-**⚠️ Overdue Tracker**
+-Identifies overdue books automatically.
+-Displays overdue days count for each delayed return.
+-**🔍 Live Search**
+-Real-time search functionality for both books and members.
 
 ## 📝 Tables
 | Table | Purpose |
