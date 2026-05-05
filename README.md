@@ -73,7 +73,6 @@ $pass = 'your_password_here';  // change this
 
 ### 🔍 Live Search
 - Real-time search functionality for both books and members.
->>>>>>> 801cdc691b13110e7f2d1354a23a564cd6b4d031
 
 ## 📝 Tables
 | Table | Purpose |
